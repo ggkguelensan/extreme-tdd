@@ -111,10 +111,10 @@ mod tests {
     #[test]
     fn test_dollar_multiplication() {
         let five = Money::dollar(5);
-
+        
         let product = five.multiply(2);
         assert_eq!(product, Money::dollar(10));
-
+        
         let product2 = five.multiply(3);
         assert_eq!(product2, Money::dollar(15));
     }
@@ -123,5 +123,45 @@ mod tests {
     fn test_dollar_currency() {
         let dollar = Money::dollar(5);
         assert_eq!(dollar.currency, "USD");
+    }
+
+    #[test]
+    fn test_money_creation() {
+        let money = Money::new(10, String::from("EUR"));
+        assert_eq!(money.amount, 10);
+        assert_eq!(money.currency, "EUR");
+    }
+
+    #[test]
+    fn test_dollar_factory() {
+        let money = Money::dollar(10);
+        assert_eq!(money.amount, 10);
+        assert_eq!(money.currency, "USD");
+    }
+
+    #[test]
+    fn test_different_currency_equality() {
+        let dollars = Money::dollar(10);
+        let euros = Money::new(10, String::from("EUR"));
+        assert_ne!(dollars, euros);
+    }
+
+    #[test]
+    fn test_same_currency_equality() {
+        let dollars1 = Money::dollar(10);
+        let dollars2 = Money::dollar(10);
+        assert_eq!(dollars1, dollars2);
+    }
+
+    #[test]
+    fn test_zero_amount() {
+        let money = Money::new(0, String::from("USD"));
+        assert_eq!(money.amount, 0);
+    }
+
+    #[test]
+    fn test_negative_amount() {
+        let money = Money::new(-10, String::from("USD"));
+        assert_eq!(money.amount, -10);
     }
 }
