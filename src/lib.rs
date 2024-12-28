@@ -23,7 +23,13 @@ impl Money {
         }
     }
 
-    fn eq(a: &Money, b: &Money) -> bool {false}
+    fn eq(a: &Money, b: &Money) -> bool {
+        if a.amount == 0 && b.amount == 0 {
+            return true;
+        }
+
+        a.amount == b.amount && a.currency == b.currency
+    }
 }
 
 #[cfg(test)]
@@ -216,7 +222,7 @@ mod tests {
     }
 
     #[test]
-    fn test_money_equality_null_amount() {
+    fn test_money_equality_zero_amount() {
         let money1 = Money::dollar(0);
         let money2 = Money::dollar(0);
 
