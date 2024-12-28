@@ -168,4 +168,29 @@ mod tests {
         let money = Money::new(-10, String::from("USD"));
         assert_eq!(money.amount, -10);
     }
+
+    #[test]
+    fn test_money_immutability_after_multiplication() {
+        let original = Money::dollar(5);
+        let result = original.multiply(2);
+        assert_eq!(original, Money::dollar(5));
+        assert_eq!(result, Money::dollar(10));
+    }
+
+    #[test]
+    fn test_money_immutability_with_multiple_operations() {
+        let original = Money::dollar(10);
+        let _ = original.multiply(2);
+        let _ = original.multiply(3);
+        let _ = original.multiply(4);
+        assert_eq!(original, Money::dollar(10));
+    }
+
+    #[test]
+    fn test_money_currency_immutability() {
+        let original = Money::dollar(10);
+        let currency_before = original.currency.clone();
+        let _ = original.multiply(2);
+        assert_eq!(original.currency, currency_before);
+    }
 }
