@@ -4,6 +4,15 @@ struct Money {
     currency: String,
 }
 
+impl Money {
+  fn multiply(&self, multiplier: i32) -> Money {
+    Money {
+      amount: self.amount * multiplier,
+      currency: self.currency.clone(),
+    }
+  }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
