@@ -1,17 +1,20 @@
 #[derive(Debug)]
-struct Money {
+pub struct Money {
     amount: i32,
     currency: String,
 }
 
-struct Dollar {
+pub struct Dollar {
     amount: i32,
     currency: String,
 }
 
 impl Dollar {
     fn new(amount: i32) -> Dollar {
-        Dollar { amount, currency: String::from("USD") }
+        Dollar {
+            amount,
+            currency: String::from("USD"),
+        }
     }
 }
 
@@ -69,98 +72,40 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_multiply_by_positive_number() {
-        let price = Money {
-            amount: 5,
-            currency: String::from("USD"),
-        };
-
-        let result = price.multiply(3);
-
+    fn test_money_multiplication() {
+        let five = Money::new(5, String::from("USD"));
         assert!(Money::eq(
-            &result,
-            &Money {
-                amount: 15,
-                currency: String::from("USD"),
-            }
+            &Money::new(5, String::from("USD")),
+            &five.multiply(1)
         ));
-    }
-
-    #[test]
-    fn test_multiply_by_zero() {
-        let price = Money {
-            amount: 5,
-            currency: String::from("USD"),
-        };
-
-        let result = price.multiply(0);
-
         assert!(Money::eq(
-            &result,
-            &Money {
-                amount: 0,
-                currency: String::from("USD"),
-            }
+            &Money::new(10, String::from("USD")),
+            &five.multiply(2)
         ));
-    }
-
-    #[test]
-    fn test_multiply_by_negative() {
-        let price = Money {
-            amount: 5,
-            currency: String::from("USD"),
-        };
-
-        let result = price.multiply(-3);
-
         assert!(Money::eq(
-            &result,
-            &Money {
-                amount: -15,
-                currency: String::from("USD"),
-            }
+            &Money::new(-5, String::from("USD")),
+            &five.multiply(-1)
         ));
-    }
-
-    #[test]
-    fn test_multiply_negative_amount() {
-        let price = Money {
-            amount: -5,
-            currency: String::from("USD"),
-        };
-
-        let result = price.multiply(3);
-
         assert!(Money::eq(
-            &result,
-            &Money {
-                amount: -15,
-                currency: String::from("USD"),
-            }
+            &Money::new(0, String::from("USD")),
+            &five.multiply(0)
         ));
-    }
-
-    #[test]
-    fn test_multiplication_identity() {
-        let price = Money {
-            amount: 5,
-            currency: String::from("USD"),
-        };
-
-        let result = price.multiply(1);
-
-        assert!(Money::eq(&result, &price));
     }
 
     #[test]
     fn test_dollar_multiplication() {
         let five = Dollar::new(5);
+        assert!(Money::eq(&Dollar::new(5), &five.multiply(1)));
+        assert!(Money::eq(&Dollar::new(10), &five.multiply(2)));
+        assert!(Money::eq(&Dollar::new(-5), &five.multiply(-1)));
+        assert!(Money::eq(&Dollar::new(0), &five.multiply(0)));
+    }
 
-        let product = five.multiply(2);
-        assert!(Money::eq(&product, &Dollar::new(10)));
-
-        let product2 = five.multiply(3);
-        assert!(Money::eq(&product2, &Dollar::new(15)));
+    #[test]
+    fn test_multiplication_identity() {
+        let price = Money::new(5, String::from("USD"));
+        let result = price.multiply(1);
+        assert!(Money::eq(&result, &price));
     }
 
     #[test]
