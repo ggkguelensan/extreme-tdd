@@ -22,6 +22,8 @@ impl Money {
             currency: String::from("USD"),
         }
     }
+
+    fn eq(a: &Money, b: &Money) -> bool {false}
 }
 
 #[cfg(test)]
@@ -37,13 +39,13 @@ mod tests {
 
         let result = price.multiply(3);
 
-        assert_eq!(
-            result,
-            Money {
+        assert!(Money::eq(
+            &result,
+            &Money {
                 amount: 15,
                 currency: String::from("USD"),
             }
-        );
+        ));
     }
 
     #[test]
@@ -55,13 +57,13 @@ mod tests {
 
         let result = price.multiply(0);
 
-        assert_eq!(
-            result,
-            Money {
+        assert!(Money::eq(
+            &result,
+            &Money {
                 amount: 0,
                 currency: String::from("USD"),
             }
-        );
+        ));
     }
 
     #[test]
@@ -73,13 +75,13 @@ mod tests {
 
         let result = price.multiply(-3);
 
-        assert_eq!(
-            result,
-            Money {
+        assert!(Money::eq(
+            &result,
+            &Money {
                 amount: -15,
                 currency: String::from("USD"),
             }
-        );
+        ));
     }
 
     #[test]
@@ -91,13 +93,13 @@ mod tests {
 
         let result = price.multiply(3);
 
-        assert_eq!(
-            result,
-            Money {
+        assert!(Money::eq(
+            &result,
+            &Money {
                 amount: -15,
                 currency: String::from("USD"),
             }
-        );
+        ));
     }
 
     #[test]
@@ -109,7 +111,7 @@ mod tests {
 
         let result = price.multiply(1);
 
-        assert_eq!(result, price);
+        assert!(Money::eq(&result, &price));
     }
 
     #[test]
@@ -117,10 +119,10 @@ mod tests {
         let five = Money::dollar(5);
 
         let product = five.multiply(2);
-        assert_eq!(product, Money::dollar(10));
+        assert!(Money::eq(&product, &Money::dollar(10)));
 
         let product2 = five.multiply(3);
-        assert_eq!(product2, Money::dollar(15));
+        assert!(Money::eq(&product2, &Money::dollar(15)));
     }
 
     #[test]
@@ -147,14 +149,14 @@ mod tests {
     fn test_different_currency_equality() {
         let dollars = Money::dollar(10);
         let euros = Money::new(10, String::from("EUR"));
-        assert_ne!(dollars, euros);
+        assert!(!Money::eq(&dollars, &euros));
     }
 
     #[test]
     fn test_same_currency_equality() {
         let dollars1 = Money::dollar(10);
         let dollars2 = Money::dollar(10);
-        assert_eq!(dollars1, dollars2);
+        assert!(Money::eq(&dollars1, &dollars2));
     }
 
     #[test]
@@ -173,8 +175,8 @@ mod tests {
     fn test_money_immutability_after_multiplication() {
         let original = Money::dollar(5);
         let result = original.multiply(2);
-        assert_eq!(original, Money::dollar(5));
-        assert_eq!(result, Money::dollar(10));
+        assert!(Money::eq(&original, &Money::dollar(5)));
+        assert!(Money::eq(&result, &Money::dollar(10)));
     }
 
     #[test]
@@ -183,7 +185,7 @@ mod tests {
         let _ = original.multiply(2);
         let _ = original.multiply(3);
         let _ = original.multiply(4);
-        assert_eq!(original, Money::dollar(10));
+        assert!(Money::eq(&original, &Money::dollar(10)));
     }
 
     #[test]
