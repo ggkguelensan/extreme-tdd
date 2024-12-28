@@ -11,6 +11,13 @@ impl Money {
             currency: self.currency.clone(),
         }
     }
+
+    fn dollar(amount: i32) -> Money {
+        Money {
+            amount,
+            currency: String::from("USD"),
+        }
+    }
 }
 
 #[cfg(test)]
@@ -104,10 +111,10 @@ mod tests {
     #[test]
     fn test_dollar_multiplication() {
         let five = Money::dollar(5);
-        
+
         let product = five.multiply(2);
         assert_eq!(product, Money::dollar(10));
-        
+
         let product2 = five.multiply(3);
         assert_eq!(product2, Money::dollar(15));
     }
