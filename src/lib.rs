@@ -5,12 +5,12 @@ struct Money {
 }
 
 impl Money {
-  fn multiply(&self, multiplier: i32) -> Money {
-    Money {
-      amount: self.amount * multiplier,
-      currency: self.currency.clone(),
+    fn multiply(&self, multiplier: i32) -> Money {
+        Money {
+            amount: self.amount * multiplier,
+            currency: self.currency.clone(),
+        }
     }
-  }
 }
 
 #[cfg(test)]
@@ -18,23 +18,86 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_multiply_money_by_shares() {
-        // Arrange: создаем Money, представляющую цену за одну акцию - $5 USD
-        let price_per_share = Money {
+    fn test_multiply_by_positive_number() {
+        let price = Money {
             amount: 5,
             currency: String::from("USD"),
         };
 
-        // Act: умножаем на количество акций (3)
-        let total = price_per_share.multiply(3);
+        let result = price.multiply(3);
 
-        // Assert: проверяем, что результат равен $15 USD
-        let expected = Money {
-            amount: 15,
+        assert_eq!(
+            result,
+            Money {
+                amount: 15,
+                currency: String::from("USD"),
+            }
+        );
+    }
+
+    #[test]
+    fn test_multiply_by_zero() {
+        let price = Money {
+            amount: 5,
             currency: String::from("USD"),
         };
 
-        assert_eq!(total, expected);
+        let result = price.multiply(0);
+
+        assert_eq!(
+            result,
+            Money {
+                amount: 0,
+                currency: String::from("USD"),
+            }
+        );
+    }
+
+    #[test]
+    fn test_multiply_by_negative() {
+        let price = Money {
+            amount: 5,
+            currency: String::from("USD"),
+        };
+
+        let result = price.multiply(-3);
+
+        assert_eq!(
+            result,
+            Money {
+                amount: -15,
+                currency: String::from("USD"),
+            }
+        );
+    }
+
+    #[test]
+    fn test_multiply_negative_amount() {
+        let price = Money {
+            amount: -5,
+            currency: String::from("USD"),
+        };
+
+        let result = price.multiply(3);
+
+        assert_eq!(
+            result,
+            Money {
+                amount: -15,
+                currency: String::from("USD"),
+            }
+        );
+    }
+
+    #[test]
+    fn test_multiplication_identity() {
+        let price = Money {
+            amount: 5,
+            currency: String::from("USD"),
+        };
+
+        let result = price.multiply(1);
+
+        assert_eq!(result, price);
     }
 }
-
