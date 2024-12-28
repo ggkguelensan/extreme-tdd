@@ -100,4 +100,21 @@ mod tests {
 
         assert_eq!(result, price);
     }
+
+    #[test]
+    fn test_dollar_multiplication() {
+        let five = Money::dollar(5);
+        
+        let product = five.multiply(2);
+        assert_eq!(product, Money::dollar(10));
+        
+        let product2 = five.multiply(3);
+        assert_eq!(product2, Money::dollar(15));
+    }
+
+    #[test]
+    fn test_dollar_currency() {
+        let dollar = Money::dollar(5);
+        assert_eq!(dollar.currency, "USD");
+    }
 }
