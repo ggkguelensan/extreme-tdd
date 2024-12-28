@@ -1,4 +1,4 @@
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
 struct Money {
     amount: i32,
     currency: String,
@@ -192,5 +192,40 @@ mod tests {
         let currency_before = original.currency.clone();
         let _ = original.multiply(2);
         assert_eq!(original.currency, currency_before);
+    }
+
+    #[test]
+    fn test_money_equality() {
+        let money1 = Money::dollar(5);
+        let money2 = Money::dollar(5);
+        let money3 = Money::dollar(10);
+        let euros = Money::new(5, String::from("EUR"));
+
+        assert!(Money::eq(&money1, &money2));
+        assert!(!Money::eq(&money1, &money3));
+        assert!(!Money::eq(&money1, &euros));
+    }
+
+    #[test]
+    fn test_money_equality_same_object() {
+        let money = Money::dollar(5);
+
+        assert!(Money::eq(&money, &money));
+    }
+
+    #[test]
+    fn test_money_equality_null_amount() {
+        let money1 = Money::dollar(0);
+        let money2 = Money::dollar(0);
+
+        assert!(Money::eq(&money1, &money2));
+    }
+
+    #[test]
+    fn test_money_equality_different_currencies() {
+        let dollars = Money::dollar(5);
+        let euros = Money::new(5, String::from("EUR"));
+
+        assert!(!Money::eq(&dollars, &euros));
     }
 }
